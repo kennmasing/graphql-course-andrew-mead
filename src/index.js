@@ -2,36 +2,46 @@ import { GraphQLServer } from 'graphql-yoga'
 
 //Scalar Types - String, Boolean, Int, Float, ID
 
-
-
-// TYPE DEFINITIONS (APPLICATIN SCHEMA)
+// TYPE DEFINITIONS (APPLICATION SCHEMA)
 const typeDefs = `
     type Query {
+        me: User!
+        post: Post!
+    }
+
+    type User {
+        _id: ID!
+        name: String!
+        email: String!
+        age: Int
+    }
+
+    type Post {
+        _id: ID!
         title: String!
-        price: Int!
-        releaseYear: Int
-        rating: Float
-        inStock: Boolean
+        body: String!
+        published: Boolean
     }
 `
 
 // RESOLVERS
 const resolvers = {
     Query: {
-        title() {
-            return 'Bibingka'
+        me() {
+            return {
+                _id: '123098',
+                name: 'Taye',
+                email: 'tayemasing@gmail.com',
+                // age: '53'
+            }
         },
-        price() {
-            return 60
-        }, 
-        releaseYear() {
-            return 1981
-        },
-        rating() {
-            return 4.98
-        },
-        inStock() {
-            return true
+        post() {
+            return {
+                _id: '123123',
+                title: 'GraphQL Course',
+                body: '2018 tutorial for GraphQL by Andrew Mead',
+                published: false
+            }
         }
     } 
 }
