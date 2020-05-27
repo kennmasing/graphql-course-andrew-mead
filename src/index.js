@@ -28,19 +28,22 @@ const posts = [
         _id: "1",
         title: "Urban Planning",
         body: "Intro to Urban Planning & Architecture",
-        published: true
+        published: true,
+        author: "1"
     },
     {
         _id: "2",
         title: "Structural Materials",
         body: "Advanced Intro to Structural Materials",
-        published: true
+        published: true,
+        author: "1"
     },
     {
         _id: "3",
         title: "History of Architecture",
         body: "Intermediate to History of Architecture",
-        published: false
+        published: false,
+        author: "2"
     },
 ]
 
@@ -65,6 +68,7 @@ const typeDefs = `
         title: String!
         body: String!
         published: Boolean
+        author: User!
     }
 `
 
@@ -92,19 +96,6 @@ const resolvers = {
 
                 return isTitleMatch || isBodyMatch
             })   
-
-            // if(args.title){
-            //     return posts.filter((post) => {
-            //         return post.title.toLowerCase().includes(args.query.toLowerCase())
-            //     })
-            // } else if(args.body){
-            //     return posts.filter((post) => {
-            //         return post.body.toLowerCase().includes(args.query.toLowerCase())
-            //     })   
-            // } else if(args.published) {
-            //     return posts.find({published: args.published})
-            // }
-
         },
         me() {
             return {
@@ -122,7 +113,14 @@ const resolvers = {
                 published: false
             }
         }
-    } 
+    },
+    Post: {
+        author(parent, args, ctx, info) {
+            return users.find((user) => {
+                return user._id === parent.author
+            })
+        }
+    }
 }
 
 const server = new GraphQLServer({
