@@ -47,11 +47,32 @@ const posts = [
     },
 ]
 
+//Demo Comments
+const comments = [
+    {
+        _id: "1",
+        text: "This is great!"
+    },
+    {
+        _id: "2",
+        text: "すばらしい!"
+    },
+    {
+        _id: "1",
+        text: "すごい！"
+    },
+    {
+        _id: "1",
+        text: "Congrats on getting published!"
+    },
+]
+
 // TYPE DEFINITIONS (APPLICATION SCHEMA)
 const typeDefs = `
     type Query {
         users(query: String): [User!]!
         posts(query: String): [Post!]!
+        comments: [Comment!]!
         me: User!
         post: Post!
     }
@@ -70,6 +91,11 @@ const typeDefs = `
         body: String!
         published: Boolean
         author: User!
+    }
+
+    type Comment {
+        _id: ID!
+        text: String!
     }
 `
 
@@ -97,6 +123,9 @@ const resolvers = {
 
                 return isTitleMatch || isBodyMatch
             })   
+        },
+        comments(parent, args, ctx, info) {
+            return comments
         },
         me() {
             return {
