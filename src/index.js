@@ -5,20 +5,22 @@ import { GraphQLServer } from 'graphql-yoga'
 //Demo User Data
 const users = [
     {
-    _id: "1",
-    name: "Kenneth",
-    email: "kennmasing@gmail.com",
-    age: 29
-    },{
-    _id: "2",
-    name: "Taye",
-    email: "tayemasing@gmail.com",
-    age: 54
-    },{
-    _id: "3",
-    name: "Evelyn",
-    email: "lovemasing@gmail.com",
-    age: 46  
+        _id: "1",
+        name: "Kenneth",
+        email: "kennmasing@gmail.com",
+        age: 29
+    },
+    {
+        _id: "2",
+        name: "Taye",
+        email: "tayemasing@gmail.com",
+        age: 54
+    },
+    {
+        _id: "3",
+        name: "Evelyn",
+        email: "lovemasing@gmail.com",
+        age: 46  
     }
 ]
 
@@ -51,19 +53,23 @@ const posts = [
 const comments = [
     {
         _id: "1",
-        text: "This is great!"
+        text: "This is great!",
+        author: "3"
     },
     {
         _id: "2",
-        text: "すばらしい!"
+        text: "すばらしい!",
+        author: "1"
     },
     {
         _id: "1",
-        text: "すごい！"
+        text: "すごい！",
+        author: "1"
     },
     {
         _id: "1",
-        text: "Congrats on getting published!"
+        text: "Congrats on getting published!",
+        author: "2"
     },
 ]
 
@@ -83,6 +89,7 @@ const typeDefs = `
         email: String!
         age: Int
         posts: [Post!]!
+        comments: [Comment!]!
     }
 
     type Post {
@@ -96,6 +103,7 @@ const typeDefs = `
     type Comment {
         _id: ID!
         text: String!
+        author: User!
     }
 `
 
@@ -155,6 +163,18 @@ const resolvers = {
         posts(parent, args, ctx, info) {
             return posts.filter((post) => {
                 return post.author === parent._id
+            })
+        },
+        comments(parent, args, ctx, info) {
+            return comments.filter((comment) => {
+                return comment.author === parent._id
+            })
+        }
+    },
+    Comment: {
+        author(parent, args, ctx, info) {
+            return users.find((user) => {
+                return user._id === parent.author
             })
         }
     }
